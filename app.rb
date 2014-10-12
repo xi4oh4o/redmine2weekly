@@ -103,3 +103,15 @@ post ('/') do
     end
   end
 end
+
+get '/user/:name/remove_key' do
+  if session['username'] == params['name']
+    @auth = Auth.find_by(username: params['name'])
+    if @auth
+      @auth.key = ''
+      if @auth.save
+        redirect '/', :notice => 'Congrats! 您已成功移除Redmine Key.'
+      end
+    end
+  end
+end
