@@ -1,0 +1,28 @@
+<div class="page-header">
+  <h1>Weekly Redmine issue to Email<small> 获取一周Redmine issue并发送Email</small></h1>
+</div>
+<h2><span class="glyphicon glyphicon-globe"></span> 授权管理</h2>
+<br>
+  <p>
+    <% unless @auth.foursquare_token.to_s.empty? %>
+    <span><span class="glyphicon glyphicon-thumbs-up"></span> Foursquare 授权已完成</span>
+    <% else %>
+    <a href="https://foursquare.com/oauth2/authenticate?client_id=
+<%= getConf['Foursquare']['client_id'] %>&response_type=
+code&redirect_uri=http://foursqtoweibo.herokuapp.com/redirect_uri">
+    <span class="glyphicon glyphicon-refresh"></span> Foursquare OAuth2
+    </a>
+    <% end %>
+  </p>
+  <p>
+    <% unless @auth.weibo_token.to_s.empty? %>
+    <span><span class="glyphicon glyphicon-thumbs-up"></span> Weibo 授权已完成</span>
+    <% else %>
+    <a href="https://api.weibo.com/oauth2/authorize?client_id=
+<%= getConf['Weibo']['key'] %>&response_type=code&redirect_uri=
+http://foursqtoweibo.herokuapp.com/wei_redirect">
+    <span class="glyphicon glyphicon-refresh"></span> Weibo OAuth2
+    </a>
+    <% end %>
+  </p>
+  <small><span class="glyphicon glyphicon-info-sign"></span> 微博授权有效期仅为90天, 请在过期后重新到当前页面进行授权</small>
