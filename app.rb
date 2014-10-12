@@ -17,3 +17,10 @@ helpers do
     @conf = YAML.load(File.open('config.yml'))
   end
 end
+
+class Auth < ActiveRecord::Base
+  validates :username, uniqueness: true
+  validates :username, :password, presence: true
+end
+
+
