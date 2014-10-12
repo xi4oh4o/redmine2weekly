@@ -1,0 +1,25 @@
+body {
+  padding-top: 75px;
+}
+
+.container {
+  max-width:1000px;
+}
+
+#footer {
+  margin-top: 60px;
+  text-align: center;
+  font-size: 11px;
+}
+
+.legal {
+    color: #333;
+}
+
+.made-with {
+    color: #7b8084;
+}
+
+.heart {
+    color: #f27490;
+}
