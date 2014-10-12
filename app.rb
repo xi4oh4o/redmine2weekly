@@ -75,6 +75,8 @@ post '/user/create' do
   end
 end
 
+# Dashboard
+
 get ('/') do
   if session['username']
     @auth = Auth.find_by(username: session['username'])
@@ -88,4 +90,16 @@ get ('/') do
   end
 
   erb :index
+end
+
+post ('/') do
+  if session['username']
+    @auth = Auth.find_by(username: session['username'])
+    if @auth
+      @auth.key = params[:auth]['key']
+      if @auth.save
+        redirect '/', :notice => 'Congrats! 您已成功保存Redmine Key.'
+      end
+    end
+  end
 end
