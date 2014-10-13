@@ -7,6 +7,7 @@ require 'sinatra'
 require 'sinatra/activerecord'
 require 'sinatra/flash'
 require 'sinatra/redirect_with_flash'
+require './mail'
 require './environments'
 
 CONF = YAML.load(File.open('config.yml'))
@@ -126,8 +127,10 @@ end
 get ('/') do
   if session['username']
     @auth = Auth.find_by(username: session['username'])
-    if @auth and !@auth.key.empty?
+    if @auth and !@auth.key.to_s.empty? and !@auth.email.to_s.empty?
       @html = getWeekAgo(@auth.key)
+      # email_body = erb :mail, layout: false, locals: {fields: @html}
+      # sendWeekPost('xi4oh4o@lonlife.net', 'postmaster@etude.mailgun.org', 'Hello', email_body)
     end
   else
     redirect '/login', :notice => '请先登录!'
@@ -140,9 +143,10 @@ post ('/') do
   if session['username']
     @auth = Auth.find_by(username: session['username'])
     if @auth
-      @auth.key = params[:auth]['key']
+      @auth.key = params[:auth]['key'] if params[:auth]['key']
+      @auth.email = params[:auth]['email'] if params[:auth]['email']
       if @auth.save
-        redirect '/', :notice => 'Congrats! 您已成功保存Redmine Key.'
+        redirect '/', :notice => 'Congrats! 记录已保存'
       end
     end
   end
@@ -155,6 +159,19 @@ get '/user/:name/remove_key' do
       @auth.key = ''
       if @auth.save
         redirect '/', :notice => 'Congrats! 您已成功移除Redmine Key.'
+      end
+    end
+  end
+end
+
+
+get '/user/:name/remove_emails' do
+  if session['username'] == params['name']
+    @auth = Auth.find_by(username: params['name'])
+    if @auth
+      @auth.email = ''
+      if @auth.save
+        redirect '/', :notice => 'Congrats! 您已成功移除Email.'
       end
     end
   end
