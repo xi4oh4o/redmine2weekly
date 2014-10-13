@@ -11,7 +11,12 @@ require './environments'
 
 I18n.enforce_available_locales = true
 
+def getConf
+  @conf = YAML.load(File.open('config.yml'))
+end
+
 enable :sessions
+set :session_secret, "#{getConf['Secret']}"
 
 helpers do
   def getConf
