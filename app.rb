@@ -9,10 +9,10 @@ require 'sinatra/flash'
 require 'sinatra/redirect_with_flash'
 require './environments'
 
-@conf = YAML.load(File.open('config.yml'))
+CONF = YAML.load(File.open('config.yml'))
 
 enable :sessions
-set :session_secret, "#{@conf['Secret']}"
+set :session_secret, "#{::CONF['Secret']}"
 
 I18n.enforce_available_locales = true
 
@@ -22,6 +22,51 @@ helpers do
     Digest::SHA256.hexdigest(password)
   end
 
+  def parseJson(url)
+    response = Faraday.get(url)
+    response_hash = JSON.parse(response.body)
+    return response_hash
+  end
+
+  def simpleTime(time)
+    unless time
+      return '待完成'
+    end
+    t = Time.parse(time)
+    return t.strftime("%Y-%m-%d")
+  end
+
+  def takeFivedayRange
+    d = Date.today
+    five_days_range = [ (d - 5).to_s, d ]
+    return five_days_range
+  end
+
+  def getWeekAgo(key)
+    url = "#{::CONF['Redmine']['url']}/issues.json?assigned_to_id=" +
+    "me&status_id=*&start_date=" +
+    "%3E%3C#{takeFivedayRange[0]}%7C#{takeFivedayRange[1]}&key=#{key}"
+
+    parseJson(url)
+  end
+
+  def solveState(state)
+
+    case state
+    when 1
+      status_info = '<span style="color: red">待解决</span>'
+    when 2
+      status_info = '<span style="color: red">进行中</span>'
+    when 3
+      status_info = '<span style="color: green">已解决</span>'
+    when 4
+      status_info = '<span style="color: blue">反馈</span>'
+    when 5
+      status_info = '<span style="color: green">已完成</span>'
+    end
+
+    return status_info
+  end
 end
 
 class Auth < ActiveRecord::Base
@@ -82,9 +127,7 @@ get ('/') do
   if session['username']
     @auth = Auth.find_by(username: session['username'])
     if @auth
-      time = @auth.updated_at + 3600
-      if time < Time.now
-      end
+      @html = getWeekAgo(@auth.key)
     end
   else
     redirect '/login', :notice => '请先登录!'
