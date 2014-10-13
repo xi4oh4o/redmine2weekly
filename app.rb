@@ -126,7 +126,7 @@ end
 get ('/') do
   if session['username']
     @auth = Auth.find_by(username: session['username'])
-    if @auth
+    if @auth and !@auth.key.empty?
       @html = getWeekAgo(@auth.key)
     end
   else

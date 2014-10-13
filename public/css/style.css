@@ -25,3 +25,7 @@
     border: 1px solid #e4e4e4;
     border-collapse: collapse;
 }
+
+.alert {
+    margin-top: 30px;
+}
