@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20141012070400) do
   create_table "auths", force: true do |t|
     t.string   "username"
     t.string   "password"
+    t.string   "email"
     t.string   "key"
     t.datetime "created_at"
     t.datetime "updated_at"
