@@ -39,7 +39,7 @@
 <br>
   <p>
     <% unless @auth.key.to_s.empty? %>
-      <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过key</span>
+      <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过Redmine Key</span>
       <a href="/user/<%=session['username']%>/remove_key"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-link"></span> 移除Key?</button></a>
     <% else %>
       <form action="/" method="post"role="form">
@@ -52,5 +52,28 @@
       </form>
       <br>
       <small><span class="glyphicon glyphicon-info-sign"></span> Redmine key获取位置通常位于您的Redmine 》我的账号 》API访问键 》点击显示</small>
+    <% end %>
+  </p>
+
+  <p>
+    <% unless @auth.email.to_s.empty? %>
+      <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过收件人邮箱</span>
+      <% @auth.email.split(/,/).each do |email| %>
+        <ul>
+          <li><%=email%></li>
+        </ul>
+      <% end %>
+      <a href="/user/<%=session['username']%>/remove_emails"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-link"></span> 移除邮箱列表?</button></a>
+    <% else %>
+      <form action="/" method="post"role="form">
+      <div class="form-group">
+        <label for="email">收件人邮箱列表:</label>
+        <br>
+        <input id="email" class="form-control" name="auth[email]" type="text" value="" style="width=90%"/>
+      </div>
+      <button type="submit" class="btn btn-success">保存</button>
+      </form>
+      <br>
+      <small><span class="glyphicon glyphicon-info-sign"></span> 保存一个或一组周报收件人邮箱，用逗号分隔</small>
     <% end %>
   </p>
