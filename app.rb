@@ -9,23 +9,19 @@ require 'sinatra/flash'
 require 'sinatra/redirect_with_flash'
 require './environments'
 
-I18n.enforce_available_locales = true
-
-def getConf
-  @conf = YAML.load(File.open('config.yml'))
-end
+@conf = YAML.load(File.open('config.yml'))
 
 enable :sessions
-set :session_secret, "#{getConf['Secret']}"
+set :session_secret, "#{@conf['Secret']}"
+
+I18n.enforce_available_locales = true
 
 helpers do
-  def getConf
-    @conf = YAML.load(File.open('config.yml'))
-  end
 
   def encrypt(password)
     Digest::SHA256.hexdigest(password)
   end
+
 end
 
 class Auth < ActiveRecord::Base
