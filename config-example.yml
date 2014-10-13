@@ -1,2 +1,4 @@
-Redmine
+Redmine:
   url: YOUR_REDMINE_URL
+
+Secret: YOUR_KEY
