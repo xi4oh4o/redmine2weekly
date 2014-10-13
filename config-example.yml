@@ -2,3 +2,9 @@ Redmine:
   url: YOUR_REDMINE_URL
 
 Secret: YOUR_KEY
+
+Smtp:
+  port: YOUR_SMTP_PORT
+  address: YOUR_SMTP_ADDRESS
+  user_name: YOUR_SMTP_USER
+  password: YOUR_SMTP_PASS
