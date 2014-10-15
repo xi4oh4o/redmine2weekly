@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 ruby '2.1.3'
 
+gem 'mail'
 gem 'sinatra'
 gem 'faraday'
 gem "activerecord"
