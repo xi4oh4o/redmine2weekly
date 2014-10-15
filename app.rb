@@ -162,7 +162,7 @@ get '/user/:name/send' do
 
       if @auth.email
         @auth.email.split(',').each do |email|
-          sendWeekPost(email, 'postmaster@etude.mailgun.org',
+          sendWeekPost(email, "#{::CONF['Smtp']['user_name']}",
                       "#{@auth.real_name} 本周周报 #{takeFivedayRange[0]} -
                       #{takeFivedayRange[1]}", email_body)
         end
