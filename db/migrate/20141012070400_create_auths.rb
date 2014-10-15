@@ -3,6 +3,7 @@ class CreateAuths < ActiveRecord::Migration
     create_table :auths do |t|
       t.string :username
       t.string :password
+      t.string :real_name
       t.string :email
       t.string :key
 

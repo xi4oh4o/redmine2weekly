@@ -143,6 +143,7 @@ post ('/') do
     if @auth
       @auth.key = params[:auth]['key'] if params[:auth]['key']
       @auth.email = params[:auth]['email'] if params[:auth]['email']
+      @auth.real_name = params[:auth]['real_name'] if params[:auth]['real_name']
       if @auth.save
         redirect '/', :notice => 'Congrats! 记录已保存'
       end
@@ -162,7 +163,7 @@ get '/user/:name/send' do
       if @auth.email
         @auth.email.split(',').each do |email|
           sendWeekPost(email, 'postmaster@etude.mailgun.org',
-                      "#{@auth.username} 本周周报 #{takeFivedayRange[0]} -
+                      "#{@auth.real_name} 本周周报 #{takeFivedayRange[0]} -
                       #{takeFivedayRange[1]}", email_body)
         end
         redirect '/', :notice => '周报已发送成功!'

@@ -60,6 +60,23 @@
     <% end %>
   </p>
   <p>
+    <% unless @auth.real_name.to_s.empty? %>
+      <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已设置邮件标题展示姓名</span>
+      <a href="/user/<%=session['username']%>/remove_realname"><p><button type="button" class="btn btn-primary btn-xs btn-danger"><span class="glyphicon glyphicon-link"></span> 移除展示姓名?</button></a>
+    <% else %>
+      <form action="/" method="post"role="form">
+      <div class="form-group">
+        <label for="real_name">邮件标题展示姓名:</label>
+        <br>
+        <input id="real_name" class="form-control" name="auth[real_name]" type="text" value="" style="width=90%"/>
+      </div>
+      <button type="submit" class="btn btn-success">保存</button>
+      </form>
+      <br>
+      <small><span class="glyphicon glyphicon-info-sign"></span> 真实姓名将在周报邮件标题中展示</small>
+    <% end %>
+  </p>
+  <p>
     <% unless @auth.email.to_s.empty? %>
       <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过收件人邮箱</span>
       <% @auth.email.split(/,/).each do |email| %>
