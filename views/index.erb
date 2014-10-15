@@ -30,6 +30,11 @@
   </table>
 
   <span><span class="glyphicon glyphicon-info-sign"></span> 已解决表示Issue已处理，待提交人确认为已完成，反馈表示Issue已处理但仍有问题需跟进。</span>
+  <br>
+  <br>
+  <div>
+    <a href="/user/<%=session['username']%>/send"><button type="button" class="btn btn-primary btn-lg"><span class="glyphicon glyphicon-send"></span> 发送周报</button></a>
+  </div>
 <% else %>
   <span>生成报告需要先设置 Redmine KEY</span>
 <% end %>
@@ -40,7 +45,7 @@
   <p>
     <% unless @auth.key.to_s.empty? %>
       <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过Redmine Key</span>
-      <a href="/user/<%=session['username']%>/remove_key"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-link"></span> 移除Key?</button></a>
+      <a href="/user/<%=session['username']%>/remove_key"><p><button type="button" class="btn btn-primary btn-xs btn-danger"><span class="glyphicon glyphicon-link"></span> 移除Key?</button></a>
     <% else %>
       <form action="/" method="post"role="form">
       <div class="form-group">
@@ -54,7 +59,6 @@
       <small><span class="glyphicon glyphicon-info-sign"></span> Redmine key获取位置通常位于您的Redmine 》我的账号 》API访问键 》点击显示</small>
     <% end %>
   </p>
-
   <p>
     <% unless @auth.email.to_s.empty? %>
       <span><span class="glyphicon glyphicon-thumbs-up"></span> 您已提交过收件人邮箱</span>
@@ -63,7 +67,7 @@
           <li><%=email%></li>
         </ul>
       <% end %>
-      <a href="/user/<%=session['username']%>/remove_emails"><button type="button" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-link"></span> 移除邮箱列表?</button></a>
+      <a href="/user/<%=session['username']%>/remove_emails"><button type="button" class="btn btn-primary btn-xs btn-danger"><span class="glyphicon glyphicon-link"></span> 移除邮箱列表?</button></a>
     <% else %>
       <form action="/" method="post"role="form">
       <div class="form-group">

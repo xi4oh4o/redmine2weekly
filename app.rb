@@ -129,8 +129,6 @@ get ('/') do
     @auth = Auth.find_by(username: session['username'])
     if @auth and !@auth.key.to_s.empty? and !@auth.email.to_s.empty?
       @html = getWeekAgo(@auth.key)
-      # email_body = erb :mail, layout: false, locals: {fields: @html}
-      # sendWeekPost('xi4oh4o@lonlife.net', 'postmaster@etude.mailgun.org', 'Hello', email_body)
     end
   else
     redirect '/login', :notice => '请先登录!'
@@ -150,6 +148,32 @@ post ('/') do
       end
     end
   end
+end
+
+get '/user/:name/send' do
+
+
+  if session['username']
+    @auth = Auth.find_by(username: session['username'])
+    if @auth
+      @html = getWeekAgo(@auth.key)
+      email_body = erb :mail, layout: false, locals: {fields: @html}
+
+      if @auth.email
+        @auth.email.split(',').each do |email|
+          sendWeekPost(email, 'postmaster@etude.mailgun.org',
+                      "#{@auth.username} 本周周报 #{takeFivedayRange[0]} -
+                      #{takeFivedayRange[1]}", email_body)
+        end
+        redirect '/', :notice => '周报已发送成功!'
+      else
+        redirect '/', :error => '邮件列表不存在!'
+      end
+    end
+  else
+    redirect '/login', :notice => '请先登录!'
+  end
+
 end
 
 get '/user/:name/remove_key' do
